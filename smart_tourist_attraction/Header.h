@@ -56,13 +56,19 @@ bool TopoSort(ALGraph G1);                                      //判断导游�
 
 void FindInDegree(ALGraph G1, int indegree[]);                  //查询入度
 
+int32_t get_weight(ALGraph G, int32_t i, int32_t j);            //获取两点之间的权值
+
 void MiniDistanse(ALGraph G1, int32_t path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]);          //求最短距离
 
 void MiniSpanTree(ALGraph G, std::string name);                 //输出道路修建规划图
 
-void ShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]);        //计算最短路径
+void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]);        //计算最短路径
 
-void OutPutShortestPath(ALGraph G,int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM],int i,int j);      //求最短路径
+void ShortestPath_FLOYD(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]);        //计算最短路径
+
+void OutPutShortestPath(ALGraph G,int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], int32_t i, int32_t j);      //求最短路径
+
+void OutPutShortestPath(ALGraph G,int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], std::string s1, std::string s2); //求最短路径
 
 
 #endif /* Header_h */

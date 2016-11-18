@@ -99,7 +99,6 @@ void OutputGraph(ALGraph G){
                     cout << std::setw(6) << INT16_MAX;
                 }
             }
-
         }
     }
     cout << endl;
@@ -222,6 +221,25 @@ void FindInDegree(ALGraph G1, int indegree[]){
     }
 }
 
+
+int32_t get_weight(ALGraph G, int32_t i, int32_t j){                                //取得两个点之间的权值
+    if (i == j){
+        return 0;
+    }
+    ArcNode *arc;
+    arc = G.vertices[i].firstarc;
+    while (arc != NULL){
+        if ((*arc).adjvex == j){
+            return (*arc).weight;
+        }else{
+            arc = (*arc).next;
+        }
+    }
+    if (arc == NULL){
+        return INT16_MAX;
+    }
+    return -1;
+}
 void MiniDistanse(ALGraph G1, int32_t path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
     
 }
@@ -230,10 +248,112 @@ void MiniSpanTree(ALGraph G, std::string name){
     
 }
 
-void ShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
+void ShortestPath_FLOYD(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
+    ArcNode *arc;                                                   //将邻接表读取并转换成路径path和距离D两个矩阵
+    for (int32_t i = 0; i < G.vexnum; i++){                         //对每一行的值进行一个循环判断
+        for (int32_t j = 0; j < G.vexnum; j++){                     //对每一行中的单个词进行判断
+            arc = G.vertices[i].firstarc;
+            if (i == j){
+                D[i][j] = 0;
+                path[i][j] = i;
+                continue;
+            }
+            while (arc != NULL) {                                   //遍历寻找有没有权值
+                if ((*arc).adjvex == j){
+                    D[i][j] = (*arc).weight;
+                    path[i][j] = i;
+                    break;
+                }else{
+                    arc = (*arc).next;
+                }
+            }
+            if (arc == NULL){
+                D[i][j] = INT16_MAX;
+            }
+        }
+    }
+    
+    for (int32_t k = 0; k < G.vexnum; k++){
+        for (int32_t i = 0; i < G.vexnum; i++){
+            for (int32_t j = 0; j < G.vexnum; j++){
+                if (D[i][k] + D[k][j] < D[i][j]){
+                    D[i][j] = D[i][k] + D[k][j];
+                    path[i][j] = k;
+                }
+            }
+        }
+    }
+    
+}
+
+void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
+    bool final[MAX_VERTEX_NUM][MAX_VERTEX_NUM] {false};
+    int min;                                                        //迪杰特斯拉遍历时的最小值
+    int min_num;
+    ArcNode *arc;                                                   //将邻接表读取并转换成路径path和距离D两个矩阵
+    for (int32_t i = 0; i < G.vexnum; i++){                         //对每一行的值进行一个循环判断
+        for (int32_t j = 0; j < G.vexnum; j++){                     //对每一行中的单个词进行判断
+            arc = G.vertices[i].firstarc;
+            if (i == j){
+                D[i][j] = 0;
+                path[i][j] = i;
+                continue;
+            }
+            while (arc != NULL) {                                   //遍历寻找有没有权值
+                if ((*arc).adjvex == j){
+                    D[i][j] = (*arc).weight;
+                    path[i][j] = i;
+                    break;
+                }else{
+                    arc = (*arc).next;
+                }
+            }
+            if (arc == NULL){
+                D[i][j] = INT16_MAX;
+            }
+        }
+    }
+    
+    for (int32_t i = 0; i < G.vexnum; i++){
+        for (int32_t j = 0; j < G.vexnum; j++){
+            min = MAX_VERTEX_NUM;
+            for (int32_t k = 0; k < G.vexnum; k++){
+                if (!final[i][k] && D[i][k] < min){
+                    min = D[i][k];
+                    min_num = k;
+                }
+            }
+            final[i][min_num] = true;
+            for (int32_t k = 0; k < G.vexnum; k++){
+                if (!final[i][k] && ((min + ) < D[i][k])){
+                    D[][] = ;
+                    path[i][k] = min_num;
+                }
+            }
+        }
+    }
+    
     
 }
 
 void OutPutShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], int i, int j){
-    
+    if (path[i][j] == i){
+        cout << G.vertices[i].name << "--" << G.vertices[j].name << endl;
+    }
+    else{
+        OutPutShortestPath(G, path, D, i, path[i][j]);
+        OutPutShortestPath(G, path, D, path[i][j], j);
+    }
+}
+
+void OutPutShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], std::string s1, std::string s2){
+    int32_t i = LocateVex(G, s1);
+    int32_t j = LocateVex(G, s2);
+    if (path[i][j] == i){
+        cout << G.vertices[i].name << "--" << G.vertices[j].name << endl;
+    }
+    else{
+        OutPutShortestPath(G, path, D, i, path[i][j]);
+        OutPutShortestPath(G, path, D, path[i][j], j);
+    }
 }
