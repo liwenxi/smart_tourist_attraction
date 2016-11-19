@@ -59,8 +59,7 @@ int main(int argc, const char * argv[]) {
             break;
         case 5:
             system("clear");
-            ShortestPath_FLOYD(G, path, D);
-            OutPutShortestPath(G, path, D, 2, 4);
+            MiniDistanse(G, path, D);
             system("clear");
             break;
         case 6:

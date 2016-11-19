@@ -240,7 +240,20 @@ int32_t get_weight(ALGraph G, int32_t i, int32_t j){                            
     }
     return -1;
 }
-void MiniDistanse(ALGraph G1, int32_t path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
+void MiniDistanse(ALGraph G, int32_t path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
+    cout << "请输入要查询距离的两个景点的名称：";
+    std::string s1, s2;
+    cin >> s1 >> s2;
+    int32_t i = LocateVex(G, s1);
+    int32_t j = LocateVex(G, s2);
+    cout << "最短路径为：" << endl;
+    cout << "使用DIJ" << endl;
+    ShortestPath_DIJ(G, path, D);
+    OutPutShortestPath(G, path, D, i, j);
+    cout << "使用FLOYD" << endl;
+    ShortestPath_FLOYD(G, path, D);
+    OutPutShortestPath(G, path, D, i, j);
+    cout << "最短距离为：" << D[i][j];
     
 }
 
@@ -289,7 +302,7 @@ void ShortestPath_FLOYD(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VE
 void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
     bool final[MAX_VERTEX_NUM][MAX_VERTEX_NUM] {false};
     int min;                                                        //迪杰特斯拉遍历时的最小值
-    int min_num;
+    int min_num = 0;
     ArcNode *arc;                                                   //将邻接表读取并转换成路径path和距离D两个矩阵
     for (int32_t i = 0; i < G.vexnum; i++){                         //对每一行的值进行一个循环判断
         for (int32_t j = 0; j < G.vexnum; j++){                     //对每一行中的单个词进行判断
@@ -325,8 +338,8 @@ void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERT
             }
             final[i][min_num] = true;
             for (int32_t k = 0; k < G.vexnum; k++){
-                if (!final[i][k] && ((min + ) < D[i][k])){
-                    D[][] = ;
+                if (!final[i][k] && ((min + get_weight(G, min_num, k)) < D[i][k])){
+                    D[i][k] = min + get_weight(G, min_num, k);
                     path[i][k] = min_num;
                 }
             }
