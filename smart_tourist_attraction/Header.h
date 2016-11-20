@@ -35,6 +35,11 @@ typedef struct{
     int32_t vexnum, arcnum;                                     //定义顶点的数量和边的数量
 }ALGraph;//定义邻接表
 
+struct {                                                        //定义prim算法的辅助数组
+    int32_t adjvex;
+    int32_t lowcost;
+}closedge[MAX_VERTEX_NUM];
+
 int32_t LocateVex(ALGraph &G, std::string LocateVex);           //返回地点的序号
 std::string LocateVex(ALGraph &G, int32_t LocateVex);           //返回地点的名称
 

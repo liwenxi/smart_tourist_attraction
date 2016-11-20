@@ -15,7 +15,7 @@ using std::cin;
 using std::endl;
 
 
-int32_t LocateVex(ALGraph &G, std::string LocateVex){
+int32_t LocateVex(ALGraph &G, std::string LocateVex){                      //求景点名字对应的序号
     for (int32_t i = 0; i < G.vexnum; i++ ){
         if (G.vertices[i].name == LocateVex){
             return i;
@@ -24,7 +24,7 @@ int32_t LocateVex(ALGraph &G, std::string LocateVex){
     return -1;
 }
 
-std::string LocateVex(ALGraph &G, int32_t LocateVex){
+std::string LocateVex(ALGraph &G, int32_t LocateVex){                      //重载序号对应的名字
     if (LocateVex <= G.vexnum){
         return G.vertices[LocateVex].name;
     }
@@ -253,12 +253,32 @@ void MiniDistanse(ALGraph G, int32_t path[][MAX_VERTEX_NUM], double D[][MAX_VERT
     cout << "使用FLOYD" << endl;
     ShortestPath_FLOYD(G, path, D);
     OutPutShortestPath(G, path, D, i, j);
-    cout << "最短距离为：" << D[i][j];
+    cout << "最短距离为：" << D[i][j] << endl;
     
 }
 
 void MiniSpanTree(ALGraph G, std::string name){
-    
+    cout << "道路修建规划图为：" << endl;
+    int32_t first_node = LocateVex(G, name);
+    for (int32_t i = 0; i < G.vexnum; i++){                         //对closedge进行初始化
+        closedge[i].adjvex = first_node;
+        closedge[i].lowcost = get_weight(G, first_node, i);
+    }
+    int32_t k = 0;
+    for (int32_t i = 1; i < G.vexnum; i++){
+        for (int32_t j = 0; j < G.vexnum; j++){                     //进行判断，找出最小的lowcost
+            if (((closedge[k].lowcost > closedge[j].lowcost) && (closedge[j].lowcost != 0)) || (closedge[k].lowcost == 0)){
+                k = j;
+            }
+        }
+        cout << "从" << LocateVex(G, closedge[k].adjvex) << "到" << LocateVex(G, k)<< "修一段路" << endl;
+        for (int32_t j = 0; j < G.vexnum; j++){
+            if ((closedge[j].lowcost != 0) && (get_weight(G, k, j) < closedge[j].lowcost)){
+                closedge[j].adjvex = k;
+                closedge[j].lowcost = get_weight(G, k, j);
+            }
+        }
+    }
 }
 
 void ShortestPath_FLOYD(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM]){
@@ -286,7 +306,7 @@ void ShortestPath_FLOYD(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VE
         }
     }
     
-    for (int32_t k = 0; k < G.vexnum; k++){
+    for (int32_t k = 0; k < G.vexnum; k++){                           //FLOYD动态规划
         for (int32_t i = 0; i < G.vexnum; i++){
             for (int32_t j = 0; j < G.vexnum; j++){
                 if (D[i][k] + D[k][j] < D[i][j]){
@@ -327,7 +347,7 @@ void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERT
         }
     }
     
-    for (int32_t i = 0; i < G.vexnum; i++){
+    for (int32_t i = 0; i < G.vexnum; i++){                         //先求出最小值，再根据最小值进行路径的更新，贪心算法
         for (int32_t j = 0; j < G.vexnum; j++){
             min = MAX_VERTEX_NUM;
             for (int32_t k = 0; k < G.vexnum; k++){
@@ -349,7 +369,7 @@ void ShortestPath_DIJ(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERT
     
 }
 
-void OutPutShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], int i, int j){
+void OutPutShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VERTEX_NUM], int i, int j){ //输出最短路径
     if (path[i][j] == i){
         cout << G.vertices[i].name << "--" << G.vertices[j].name << endl;
     }

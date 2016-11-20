@@ -64,6 +64,8 @@ int main(int argc, const char * argv[]) {
             break;
         case 6:
             system("clear");
+            MiniSpanTree(G, G.vertices[0].name);
+            system("clear");
             break;
         case 7:
             system("clear");
