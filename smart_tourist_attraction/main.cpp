@@ -9,6 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include "graph.h"
+#include "car.h"
 
 using std::cout;
 using std::cin;
