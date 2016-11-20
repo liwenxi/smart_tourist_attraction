@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "Header.h"
+#include "graph.h"
 
 using std::cout;
 using std::cin;
@@ -51,7 +51,6 @@ int main(int argc, const char * argv[]) {
         case 3:
             system("clear");
             CreatTourSortGraph(G, G1);
-//            OutputGraph(graph1);
             system("clear");
             break;
         case 4:

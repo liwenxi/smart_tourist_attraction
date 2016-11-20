@@ -26,7 +26,7 @@
 /* Begin PBXFileReference section */
 		AC1FFDB31DD0236700CABEBE /* smart_tourist_attraction */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smart_tourist_attraction; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC1FFDB61DD0236700CABEBE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		AC1FFDBD1DD1680E00CABEBE /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		AC1FFDBD1DD1680E00CABEBE /* graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		AC1FFDBE1DD16C7200CABEBE /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +62,7 @@
 			children = (
 				AC1FFDB61DD0236700CABEBE /* main.cpp */,
 				AC1FFDBE1DD16C7200CABEBE /* graph.cpp */,
-				AC1FFDBD1DD1680E00CABEBE /* Header.h */,
+				AC1FFDBD1DD1680E00CABEBE /* graph.h */,
 			);
 			path = smart_tourist_attraction;
 			sourceTree = "<group>";
@@ -245,6 +245,7 @@
 				AC1FFDBC1DD0236700CABEBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

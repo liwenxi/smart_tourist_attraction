@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "Header.h"
+#include "graph.h"
 
 using std::cout;
 using std::cin;
@@ -118,7 +118,6 @@ void destroy_DFS_traversal(){
     while (arc != NULL) {
         dele = arc;
         arc = (*arc).next;
-//        cout << "我要删除：" << (*dele).adjvex <<endl;                 //测试语句
         delete(dele);
     }
 }
@@ -144,7 +143,6 @@ void DFS(ALGraph G, int32_t v){                                         //从第
     (*arc).adjvex = v;
     (*arc).next = (*DFS_traversal).next;
     (*DFS_traversal).next = arc;
-//    cout << G.vertices[v].name << endl;
     if (vistnum == G.vexnum)
         return ;
     for (ArcNode *arc = G.vertices[v].firstarc; arc != NULL; arc = (*arc).next){
@@ -152,7 +150,6 @@ void DFS(ALGraph G, int32_t v){                                         //从第
             DFS(G, (*arc).adjvex);
             if (vistnum == G.vexnum)
                 return ;
-//            cout << G.vertices[v].name << endl;
             arc = new ArcNode;
             (*arc).adjvex = v;
             (*arc).next = (*DFS_traversal).next;
@@ -217,6 +214,7 @@ void FindInDegree(ALGraph G1, int indegree[]){
         arc = G1.vertices[i].firstarc;
         while (arc != NULL){
 //            if ((*arc).adjvex == )
+            /*to be continue*/
         }
     }
 }
