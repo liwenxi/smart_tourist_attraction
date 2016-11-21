@@ -8,6 +8,7 @@
 
 #include "car.h"
 #include <iostream>
+#include<ctime>
 
 using std::cout;
 using std::cin;
@@ -54,7 +55,11 @@ void enter_park(stackhead &parking){
     cout << "车牌号为：" << endl;
     cin >> (*new_car).number;
     cout << "进场的时刻：" << endl;
-    cin >> (*new_car).ar_time;
+    time_t now_time;
+    now_time = time(NULL);
+    cout<<now_time;
+    (*new_car).ar_time = int (now_time);
+    
 }
 
 void init_stackhead(stackhead &parking){
@@ -83,4 +88,20 @@ bool is_empty(stackhead parking){
     }else{
         return false;
     }
+}
+
+bool push(stackhead &parking, zanInode &e){                         
+    if (parking.top - parking.base >= parking.stacksize_curren){                        //栈满
+        return false;
+    }
+    *parking.top ++ = e;
+    return true;
+}
+
+bool pop(stackhead &parking, zanInode &e){
+    if (is_empty(parking)){
+        return false;
+    }
+    e = * --parking.top;
+    return true;
 }

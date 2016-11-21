@@ -57,6 +57,8 @@ void DFS(ALGraph G, int32_t v);                                 //通过一个�
 
 bool IsEdge(ALGraph G, std::string v1, std::string v2);
 
+bool IsEdge (ALGraph G, int32_t vertice1, int32_t vertice2);
+
 bool TopoSort(ALGraph G1);                                      //判断导游图有无回路
 
 void FindInDegree(ALGraph G1, int indegree[]);                  //查询入度

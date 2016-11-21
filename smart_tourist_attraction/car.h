@@ -29,4 +29,8 @@ void init_stackhead(stackhead &parking);                                //初始
 bool get_top(stackhead parking, zanInode &e);                           //获取栈顶元素
 
 bool is_empty(stackhead parking);                                       //判断栈是否为空
+
+bool push(stackhead &parking, zanInode &e);                             //入栈操作
+
+bool pop(stackhead &parking, zanInode &e);                              //出栈操作
 #endif /* car_h */

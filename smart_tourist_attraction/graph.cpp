@@ -106,15 +106,24 @@ void OutputGraph(ALGraph G){
 }                                                                       //输出图的邻接表
 
 bool visted[MAX_VERTEX_NUM];                                            //访问标志数组
+bool checked[MAX_VERTEX_NUM];
+int flag;                                                               //回路遍历初始初始点的标记
 //std::string vertice[MAX_VERTEX_NM];
 ArcNode *DFS_traversal = new ArcNode;
+ArcNode *loop;                                                          //存储回路的链表
 
 
 int32_t vistnum;
 
-void destroy_DFS_traversal(){
+void destroy_list(){
     ArcNode *arc, *dele;
     arc = (*DFS_traversal).next;
+    while (arc != NULL) {
+        dele = arc;
+        arc = (*arc).next;
+        delete(dele);
+    }
+    arc = (*loop).next;
     while (arc != NULL) {
         dele = arc;
         arc = (*arc).next;
@@ -123,28 +132,44 @@ void destroy_DFS_traversal(){
 }
 
 void DFSTraverse(ALGraph G){
-    destroy_DFS_traversal();
+    destroy_list();
+    ArcNode *arc;
     (*DFS_traversal).next = NULL;                                       //该链表用于存储导游图的路线
     for (int32_t i = 0; i < G.vexnum; i++){                             //对标志数组进行初始化
         visted[i] = false;
+        checked[i] = false;
     }
     vistnum = 0;
+    arc = (*loop).next;
     for (int32_t i = 0; i < G.vexnum; i++){
-        if (!visted[i]){
-            DFS(G, i);
+        if (i != 0){
+            arc = new ArcNode;
+            (*arc).adjvex = -1;
+            (*arc).next = (*loop).next;
+            (*loop).next = arc;
         }
+        arc = new ArcNode;
+        (*arc).adjvex = i;
+        (*arc).next = (*loop).next;
+        (*loop).next = arc;
+        checked[i] = true;
+        flag = i;
+        DFS(G, i);
     }
 }
 void DFS(ALGraph G, int32_t v){                                         //从第v个点开始遍历
-    visted[v] = true;
     ArcNode *arc;
-    vistnum++;
-    arc = new ArcNode;                                                  //遍历过程中将路径加到DFS_traversal中
-    (*arc).adjvex = v;
-    (*arc).next = (*DFS_traversal).next;
-    (*DFS_traversal).next = arc;
-    if (vistnum == G.vexnum)
-        return ;
+    if (!visted[v]){
+        visted[v] = true;
+        vistnum++;
+        arc = new ArcNode;                                               //遍历过程中将路径加到DFS_traversal中
+        (*arc).adjvex = v;
+        (*arc).next = (*DFS_traversal).next;
+        (*DFS_traversal).next = arc;
+    }
+    if (IsEdge(G, flag, v)){
+        
+    }
     for (ArcNode *arc = G.vertices[v].firstarc; arc != NULL; arc = (*arc).next){
         if (!visted[(*arc).adjvex]){
             DFS(G, (*arc).adjvex);
@@ -199,6 +224,15 @@ void CreatTourSortGraph(ALGraph G, ALGraph &G1){
 bool IsEdge (ALGraph G, std::string v1, std::string v2){
     int32_t vertice1 = LocateVex(G, v1);
     int32_t vertice2 = LocateVex(G, v2);
+    ArcNode *arc = G.vertices[vertice1].firstarc;
+    while (arc != NULL) {
+        if ((*arc).adjvex == vertice2)
+            return true;
+        arc = (*arc).next;
+    }
+    return false;
+}
+bool IsEdge (ALGraph G, int32_t vertice1, int32_t vertice2){
     ArcNode *arc = G.vertices[vertice1].firstarc;
     while (arc != NULL) {
         if ((*arc).adjvex == vertice2)
