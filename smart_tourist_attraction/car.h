@@ -20,4 +20,13 @@ typedef struct{
     int stacksize_curren;
 }stackhead;
 
+void car_menu();                                                        //停车场系统菜单
+
+void enter_park(stackhead &parking);                                    //进入停车场
+
+void init_stackhead(stackhead &parking);                                //初始化停车场
+
+bool get_top(stackhead parking, zanInode &e);                           //获取栈顶元素
+
+bool is_empty(stackhead parking);                                       //判断栈是否为空
 #endif /* car_h */

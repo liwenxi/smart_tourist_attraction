@@ -69,6 +69,8 @@ int main(int argc, const char * argv[]) {
             break;
         case 7:
             system("clear");
+            car_menu();
+            system("clear");
             break;
         case 0:
             system("clear");
