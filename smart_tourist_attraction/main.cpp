@@ -10,6 +10,7 @@
 #include <iomanip>
 #include "graph.h"
 #include "car.h"
+#include "searching&sort.h"
 
 using std::cout;
 using std::cin;
@@ -34,10 +35,18 @@ int main(int argc, const char * argv[]) {
         cout << "4、输出到有路线图中的回路\n";
         cout << "5、求两个景点间的最短路径和最短距离\n";
         cout << "6、输出道路修建规划图\n";
-        cout << "7、停车场车辆进出记录信息\n";
+        cout << "7、景点信息查询系统\n";
+        cout << "8、停车场车辆进出记录信息\n";
         cout << "0、退出系统\n\n";
         cout << "请输入您要选择的菜单项：";
         cin >> choose;
+        if (cin.fail()){
+            system("clear");
+            cout << "    输入错误，请重新输入！\a" << endl;
+            cin.clear();
+            cin.ignore();
+            continue;
+        }
         switch (choose) {
         case 1:
             system("clear");
@@ -56,6 +65,8 @@ int main(int argc, const char * argv[]) {
             break;
         case 4:
             system("clear");
+            DFSTraverse_loop(G);
+            system("clear");
             break;
         case 5:
             system("clear");
@@ -69,11 +80,17 @@ int main(int argc, const char * argv[]) {
             break;
         case 7:
             system("clear");
+            info_menu(G);
+            system("clear");
+            break;
+        case 8:
+            system("clear");
             car_menu();
             system("clear");
             break;
         case 0:
             system("clear");
+//                cout << is_empty(wait_queue);
             break;
                 
         default:

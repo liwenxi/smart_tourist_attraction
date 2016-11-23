@@ -7,8 +7,11 @@
 //
 
 #include <iostream>
+#include <string>
 #include <iomanip>
+#include <queue>
 #include "graph.h"
+
 
 using std::cout;
 using std::cin;
@@ -106,24 +109,21 @@ void OutputGraph(ALGraph G){
 }                                                                       //输出图的邻接表
 
 bool visted[MAX_VERTEX_NUM];                                            //访问标志数组
-bool checked[MAX_VERTEX_NUM];
-int flag;                                                               //回路遍历初始初始点的标记
-//std::string vertice[MAX_VERTEX_NM];
-ArcNode *DFS_traversal = new ArcNode;
-ArcNode *loop;                                                          //存储回路的链表
+bool loop[MAX_VERTEX_NUM];
 
-
+ArcNode *DFS_traversal = new ArcNode {NULL};
+int32_t k;
+int32_t l;
+int32_t p[MAX_VERTEX_NUM];
 int32_t vistnum;
+char loop_array[MAX_VERTEX_NUM][MAX_VERTEX_NUM];
 
-void destroy_list(){
+void destroy_DFS_traversal(){
     ArcNode *arc, *dele;
-    arc = (*DFS_traversal).next;
-    while (arc != NULL) {
-        dele = arc;
-        arc = (*arc).next;
-        delete(dele);
+    if (DFS_traversal == NULL){
+        return;
     }
-    arc = (*loop).next;
+    arc = (*DFS_traversal).next;
     while (arc != NULL) {
         dele = arc;
         arc = (*arc).next;
@@ -132,44 +132,30 @@ void destroy_list(){
 }
 
 void DFSTraverse(ALGraph G){
-    destroy_list();
-    ArcNode *arc;
+    destroy_DFS_traversal();
     (*DFS_traversal).next = NULL;                                       //该链表用于存储导游图的路线
     for (int32_t i = 0; i < G.vexnum; i++){                             //对标志数组进行初始化
         visted[i] = false;
-        checked[i] = false;
     }
     vistnum = 0;
-    arc = (*loop).next;
     for (int32_t i = 0; i < G.vexnum; i++){
-        if (i != 0){
-            arc = new ArcNode;
-            (*arc).adjvex = -1;
-            (*arc).next = (*loop).next;
-            (*loop).next = arc;
+        if (!visted[i]){
+            DFS(G, i);
         }
-        arc = new ArcNode;
-        (*arc).adjvex = i;
-        (*arc).next = (*loop).next;
-        (*loop).next = arc;
-        checked[i] = true;
-        flag = i;
-        DFS(G, i);
     }
 }
+
+
 void DFS(ALGraph G, int32_t v){                                         //从第v个点开始遍历
+    visted[v] = true;
     ArcNode *arc;
-    if (!visted[v]){
-        visted[v] = true;
-        vistnum++;
-        arc = new ArcNode;                                               //遍历过程中将路径加到DFS_traversal中
-        (*arc).adjvex = v;
-        (*arc).next = (*DFS_traversal).next;
-        (*DFS_traversal).next = arc;
-    }
-    if (IsEdge(G, flag, v)){
-        
-    }
+    vistnum++;
+    arc = new ArcNode;                                                  //遍历过程中将路径加到DFS_traversal中
+    (*arc).adjvex = v;
+    (*arc).next = (*DFS_traversal).next;
+    (*DFS_traversal).next = arc;
+    if (vistnum == G.vexnum)
+        return ;
     for (ArcNode *arc = G.vertices[v].firstarc; arc != NULL; arc = (*arc).next){
         if (!visted[(*arc).adjvex]){
             DFS(G, (*arc).adjvex);
@@ -183,6 +169,42 @@ void DFS(ALGraph G, int32_t v){                                         //从第
     }
 }
 
+void DFSTraverse_loop(ALGraph G){                                       //深度遍历回路
+    for (int32_t i = 0; i < G.vexnum; i++){                             //对标志数组进行初始化
+        visted[i] = false;
+    }
+    l = 0;
+    for (int32_t i = 0; i < G.vexnum; i++){
+        k = 0;
+        p[0] = i;
+        if (!visted[i]){
+            DFS_loop(G, i);
+        }
+    }
+}
+void DFS_loop(ALGraph G, int32_t v){                                      //深度遍历回路
+    visted[v] = true;
+    for (ArcNode *arc = G.vertices[v].firstarc; arc != NULL; arc = (*arc).next){
+        if ((*arc).adjvex > p[0] && !visted[(*arc).adjvex]){
+            k++;
+            p[k] = (*arc).adjvex;
+            DFS_loop(G, (*arc).adjvex);
+        }
+        if (p[0] == (*arc).adjvex && k >1){
+            l++;
+            cout << "图中的第" << l << "个环：";
+            for (int32_t j = 0; j < k+1; j++){
+                cout << LocateVex(G, p[j]) << " ";
+//                loop_array[l][j] = p[j];
+            }
+
+            cout << endl;
+        }
+    }
+    visted[p[k]] = false;
+    p[k] = 0;
+    k--;
+}
 void CreatTourSortGraph(ALGraph G, ALGraph &G1){
     DFSTraverse(G);
     
@@ -198,11 +220,11 @@ void CreatTourSortGraph(ALGraph G, ALGraph &G1){
     
     arc = (*DFS_traversal).next;                                            //按照导游图顺序输出
     while (arc != NULL) {
-        cout << LocateVex(G, arc -> adjvex) << endl;
+        cout << LocateVex(G, arc -> adjvex) << " ";
         arc = arc -> next;
     }
     
-    ArcNode *dele;                                                          //开始创建导游图
+//    ArcNode *dele;                                                          //开始创建导游图
     G1.vexnum = G.vexnum;
     arc = (*DFS_traversal).next;
     for (int32_t i = 0; i < G1.vexnum; i++){
@@ -214,9 +236,8 @@ void CreatTourSortGraph(ALGraph G, ALGraph &G1){
         (*new_arc).adjvex = (*arc).next->adjvex;
         (*new_arc).next = G1.vertices[(*arc).adjvex].firstarc;
         G1.vertices[(*arc).adjvex].firstarc = new_arc;
-        dele = arc;
+//        dele = arc;
         arc = (*arc).next;
-//        delete(dele);                                                     //删除路线图节点
     }
     
 }
@@ -232,26 +253,29 @@ bool IsEdge (ALGraph G, std::string v1, std::string v2){
     }
     return false;
 }
-bool IsEdge (ALGraph G, int32_t vertice1, int32_t vertice2){
-    ArcNode *arc = G.vertices[vertice1].firstarc;
-    while (arc != NULL) {
-        if ((*arc).adjvex == vertice2)
-            return true;
-        arc = (*arc).next;
-    }
-    return false;
-}
 
-void FindInDegree(ALGraph G1, int indegree[]){
-    ArcNode *arc;
-    for (int32_t i = 0; i < G1.vexnum; i++){
-        arc = G1.vertices[i].firstarc;
-        while (arc != NULL){
-//            if ((*arc).adjvex == )
-            /*to be continue*/
-        }
-    }
-}
+//void FindInDegree(ALGraph G1, int indegree[]){
+////    ArcNode *arc;
+////    for (int32_t i = 0; i < G1.vexnum; i++){
+////        arc = G1.vertices[i].firstarc;
+////        while (arc != NULL){
+////            //            if ((*arc).adjvex == )
+////            /*to be continue*/
+////        }
+////    }
+//    for(int i=0; i<G1.vexnum; i++)
+//        indegree[i]=0;
+//    
+//    for(int32_t i=0; i<G1.vexnum; i++)
+//    {
+//        ArcNode *p=G1.vertices[i].firstarc;
+//        while(p)
+//        {
+//            indegree[p->adjvex]++;
+//            p=p->next;
+//        }
+//    }
+//}
 
 
 int32_t get_weight(ALGraph G, int32_t i, int32_t j){                                //取得两个点之间的权值
@@ -422,3 +446,5 @@ void OutPutShortestPath(ALGraph G, int path[][MAX_VERTEX_NUM], double D[][MAX_VE
         OutPutShortestPath(G, path, D, path[i][j], j);
     }
 }
+
+

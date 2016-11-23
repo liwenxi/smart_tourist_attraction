@@ -51,9 +51,15 @@ void CreatTourSortGraph(ALGraph G, ALGraph &G1);                //输出导游�
 
 void destroy_DFS_traversal();
 
+void TopologicalSort(ALGraph G);
+
 void DFSTraverse(ALGraph G);                                    //深度遍历未遍历的节点
 
+void DFSTraverse_loop(ALGraph G);
+
 void DFS(ALGraph G, int32_t v);                                 //通过一个节点向下继续寻找未遍历的节点
+
+void DFS_loop(ALGraph G, int32_t v);
 
 bool IsEdge(ALGraph G, std::string v1, std::string v2);
 

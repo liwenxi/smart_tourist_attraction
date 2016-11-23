@@ -10,6 +10,7 @@
 		AC04F82A1DE1B36700D38AB8 /* car.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC04F8291DE1B36700D38AB8 /* car.cpp */; };
 		AC1FFDB71DD0236700CABEBE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1FFDB61DD0236700CABEBE /* main.cpp */; };
 		AC1FFDBF1DD16C7200CABEBE /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1FFDBE1DD16C7200CABEBE /* graph.cpp */; };
+		AC7663931DE54C1600F616D1 /* searching&sort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC7663921DE54C1600F616D1 /* searching&sort.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		AC1FFDB61DD0236700CABEBE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AC1FFDBD1DD1680E00CABEBE /* graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		AC1FFDBE1DD16C7200CABEBE /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
+		AC7663921DE54C1600F616D1 /* searching&sort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "searching&sort.cpp"; sourceTree = "<group>"; };
+		AC7663941DE54C6D00F616D1 /* searching&sort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "searching&sort.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,8 @@
 				AC1FFDB61DD0236700CABEBE /* main.cpp */,
 				AC1FFDBE1DD16C7200CABEBE /* graph.cpp */,
 				AC1FFDBD1DD1680E00CABEBE /* graph.h */,
+				AC7663921DE54C1600F616D1 /* searching&sort.cpp */,
+				AC7663941DE54C6D00F616D1 /* searching&sort.h */,
 				AC04F8281DE1B2C700D38AB8 /* car.h */,
 				AC04F8291DE1B36700D38AB8 /* car.cpp */,
 			);
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC04F82A1DE1B36700D38AB8 /* car.cpp in Sources */,
+				AC7663931DE54C1600F616D1 /* searching&sort.cpp in Sources */,
 				AC1FFDBF1DD16C7200CABEBE /* graph.cpp in Sources */,
 				AC1FFDB71DD0236700CABEBE /* main.cpp in Sources */,
 			);
